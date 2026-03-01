@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaderboard - AI Cyber HQ</title>
+    <link rel="stylesheet" href="assets/styles.css" />
+
+    <style>
+        .lb-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+        }
+
+        .lb-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .lb-search {
+            width: min(520px, 92vw);
+            padding: 0.7rem 1rem;
+            background: transparent;
+            border: 1px solid var(--cy-border);
+            color: var(--cy-text-main);
+            font-family: 'Orbitron', sans-serif;
+            outline: none;
+            transition: var(--cy-transition);
+        }
+
+        .lb-search:focus {
+            border-color: var(--cy-primary);
+            box-shadow: 0 0 12px rgba(0, 255, 204, 0.2);
+        }
+
+        .lb-btn {
+            padding: 0.7rem 1rem;
+            background: transparent;
+            border: 1px solid var(--cy-border);
+            color: var(--cy-text-main);
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--cy-transition);
+        }
+
+        .lb-btn:hover {
+            border-color: var(--cy-primary);
+            color: var(--cy-primary);
+        }
+
+        .lb-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border: 1px solid var(--cy-border);
+        }
+
+        .lb-table th,
+        .lb-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 255, 204, 0.12);
+        }
+
+        .lb-table th {
+            color: var(--cy-primary);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            background: rgba(0, 255, 204, 0.06);
+        }
+
+        .rank-pill {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border: 1px solid var(--cy-border);
+            border-radius: 999px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .badge {
+            padding: 0.2rem 0.6rem;
+            border: 1px solid var(--cy-border);
+            border-radius: 999px;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        @media (max-width: 640px) {
+
+            .lb-table th:nth-child(3),
+            .lb-table td:nth-child(3) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="cyber-nav">
+        <a href="index.html" class="cyber-nav-brand">⚡ AICYBERHQ</a>
+
+        <ul class="cyber-nav-links">
+            <li><a href="index.html" class="cyber-nav-link">Home</a></li>
+            <li><a href="events.html" class="cyber-nav-link">Events</a></li>
+            <li><a href="leaderboard.html" class="cyber-nav-link active">Leaderboard</a></li>
+            <li><a href="profile.html" class="cyber-nav-link">Profiles</a></li>
+        </ul>
+
+        <button class="cyber-menu-btn" aria-label="Toggle Menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+    </nav>
+
+    <main class="cyber-main">
+        <h1 class="lb-header cyber-font">Leaderboard Terminal</h1>
+
+        <div class="lb-controls">
+            <input id="lbSearch" class="lb-search" type="text" placeholder="Search member name..." />
+            <button id="lbSortBtn" class="lb-btn">Sort: High → Low</button>
+        </div>
+
+        <div class="cyber-card" style="padding: 0; overflow: hidden;">
+            <table class="lb-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Member</th>
+                        <th>Points</th>
+                        <th>Badge</th>
+                    </tr>
+                </thead>
+                <tbody id="lbBody"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="assets/data.js"></script>
+    <script src="assets/app.js"></script>
+
+</body>
+
+</html>

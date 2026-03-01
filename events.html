@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - AI Cyber HQ</title>
+
+    <link rel="stylesheet" href="assets/styles.css">
+
+    <style>
+        /* Events Page Specific Styles */
+        .events-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--cy-border);
+            color: var(--cy-text-main);
+            padding: 0.5rem 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--cy-transition);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: var(--cy-primary);
+            color: var(--cy-primary);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.2) inset;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .event-card {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .event-status {
+            align-self: flex-start;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 1px solid;
+            letter-spacing: 1px;
+        }
+
+        .status-live {
+            color: var(--cy-danger);
+            border-color: var(--cy-danger);
+            box-shadow: 0 0 5px rgba(255, 42, 42, 0.5);
+            animation: pulse-red 2s infinite;
+        }
+
+        .status-upcoming {
+            color: var(--cy-accent);
+            border-color: var(--cy-accent);
+        }
+
+        .status-past {
+            color: var(--cy-text-muted);
+            border-color: var(--cy-text-muted);
+        }
+
+        @keyframes pulse-red {
+            0% {
+                box-shadow: 0 0 5px rgba(255, 42, 42, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 0 15px rgba(255, 42, 42, 0.6);
+            }
+
+            100% {
+                box-shadow: 0 0 5px rgba(255, 42, 42, 0.2);
+            }
+        }
+
+        .event-date {
+            color: var(--cy-primary);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .event-title {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        .event-desc {
+            color: var(--cy-text-muted);
+            flex-grow: 1;
+        }
+
+        .read-more-btn {
+            margin-top: auto;
+            align-self: flex-start;
+            padding: 0.5rem 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(3, 4, 7, 0.9);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--cy-transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            width: 90%;
+            max-width: 600px;
+            background: var(--cy-surface);
+            border: 1px solid var(--cy-primary);
+            padding: 2.5rem;
+            position: relative;
+            transform: scale(0.9);
+            transition: var(--cy-transition);
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--cy-primary);
+            font-size: 2rem;
+            line-height: 1;
+            cursor: pointer;
+            transition: var(--cy-transition);
+        }
+
+        .modal-close:hover {
+            color: var(--cy-danger);
+            text-shadow: 0 0 10px var(--cy-danger);
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            margin-top: 1rem;
+        }
+
+        .modal-body p {
+            margin-bottom: 1rem;
+            color: var(--cy-text-muted);
+        }
+
+        .modal-body strong {
+            color: var(--cy-text-main);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="cyber-nav">
+        <a href="index.html" class="cyber-nav-brand">⚡ AICYBERHQ</a>
+
+        <ul class="cyber-nav-links">
+            <li><a href="index.html" class="cyber-nav-link">Home</a></li>
+            <li><a href="events.html" class="cyber-nav-link active">Events</a></li>
+            <li><a href="leaderboard.html" class="cyber-nav-link">Leaderboard</a></li>
+            <li><a href="profile.html" class="cyber-nav-link">Profiles</a></li>
+        </ul>
+
+        <button class="cyber-menu-btn" aria-label="Toggle Menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="cyber-main">
+        <h1 class="events-header cyber-font">HQ Events Terminal</h1>
+
+        <!-- Filters -->
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">All Logs</button>
+            <button class="filter-btn" data-filter="live">Live Ops</button>
+            <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+            <button class="filter-btn" data-filter="past">Archived</button>
+        </div>
+
+        <!-- Events Grid -->
+        <div class="events-grid" id="eventsGrid">
+
+            <!-- Event Card 1 -->
+            <div class="cyber-card event-card" data-category="live">
+                <span class="event-status status-live">Live</span>
+                <div class="event-date">MAR 01, 2026 // 18:00 UTC</div>
+                <h3 class="event-title cyber-font">Global CTF Qualifier</h3>
+                <p class="event-desc">Join thousands of hackers globally to penetrate simulated corporate networks and
+                    secure your spot in the finals.</p>
+                <button class="cyber-btn read-more-btn"
+                    onclick="openModal('Global CTF Qualifier', 'Access authorization required.<br><br>Join thousands of hackers globally to penetrate simulated corporate networks and secure your spot in the finals. Complete challenges in cryptography, reverse engineering, web exploitation, and forensics.<br><br><strong>Rewards:</strong> 50,000 Credits, Exclusive Badge<br><strong>Comms:</strong> Channel #ctf-live')">
+                    Initialize >_
+                </button>
+            </div>
+
+            <!-- Event Card 2 -->
+            <div class="cyber-card event-card" data-category="upcoming">
+                <span class="event-status status-upcoming">Upcoming</span>
+                <div class="event-date">MAR 15, 2026 // 20:00 UTC</div>
+                <h3 class="event-title cyber-font">AI Defensive Protocols</h3>
+                <p class="event-desc">Learn how to configure neural networks to autonomously defend against zero-day
+                    exploits in real-time.</p>
+                <button class="cyber-btn read-more-btn"
+                    onclick="openModal('AI Defensive Protocols', 'Learn how to configure neural networks to autonomously defend against zero-day exploits in real-time. This hands-on workshop covers reinforcement learning models applied to network traffic analysis.<br><br><strong>Prerequisites:</strong> Basic ML, Python, Network Fundamentals')">
+                    Initialize >_
+                </button>
+            </div>
+
+            <!-- Event Card 3 -->
+            <div class="cyber-card event-card" data-category="upcoming">
+                <span class="event-status status-upcoming">Upcoming</span>
+                <div class="event-date">APR 05, 2026 // 12:00 UTC</div>
+                <h3 class="event-title cyber-font">Quantum Cryptography Summit</h3>
+                <p class="event-desc">Preparing for Q-Day: Upgrading protocols to withstand quantum computing decryption
+                    capabilities.</p>
+                <button class="cyber-btn read-more-btn"
+                    onclick="openModal('Quantum Cryptography Summit', 'Preparing for Q-Day: Upgrading protocols to withstand quantum computing decryption capabilities. Keynotes from industry leaders bridging the gap between hardware scaling and software readiness.<br><br><strong>Location:</strong> VR Meta-Room Beta')">
+                    Initialize >_
+                </button>
+            </div>
+
+            <!-- Event Card 4 -->
+            <div class="cyber-card event-card" data-category="past">
+                <span class="event-status status-past">Past</span>
+                <div class="event-date">FEB 10, 2026 // 14:00 UTC</div>
+                <h3 class="event-title cyber-font">Zero Trust Architecture</h3>
+                <p class="event-desc">Expert discussion on implementing zero trust frameworks in decentralized AI
+                    infrastructure.</p>
+                <button class="cyber-btn read-more-btn"
+                    onclick="openModal('Zero Trust Architecture', 'Expert discussion on implementing zero trust frameworks in decentralized AI infrastructure. Watch the recorded session to hear from top security chiefs and AI researchers.<br><br><strong>Status:</strong> Recording Available in Archive<br><strong>Duration:</strong> 1h 45m')">
+                    Initialize >_
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal Popup -->
+    <div class="modal-overlay" id="eventModal" onclick="closeModalOnOutsideClick(event)">
+        <div class="modal-content cyber-card" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">×</button>
+
+            <h2 class="cyber-font" id="modalTitle"
+                style="color: var(--cy-primary); margin-bottom: 1rem; text-shadow: var(--cy-glow-primary);">
+                Event Title
+            </h2>
+
+            <div class="modal-body" id="modalBody">
+                <!-- Content injected via JS -->
+            </div>
+
+            <button class="cyber-btn" style="margin-top: 2rem; width: 100%;" onclick="closeModal()">Close
+                Terminal</button>
+        </div>
+    </div>
+
+    <!-- Scripts (CORRECT ORDER) -->
+    <script src="assets/data.js"></script>
+    <script src="assets/app.js"></script>
+
+</body>
+
+</html>
