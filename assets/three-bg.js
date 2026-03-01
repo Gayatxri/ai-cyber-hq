@@ -1,65 +1,61 @@
-// assets/three-bg.js
-(() => {
-    const mount = document.getElementById("three-bg");
-    if (!mount || !window.THREE) return;
+/* ===== Red/Black Web-Hero Upgrade ===== */
 
-    const scene = new THREE.Scene();
+:root{
+  --cy-bg: #050509;
+  --cy-surface: #090912;
+  --cy-surface-light: #101022;
 
-    const camera = new THREE.PerspectiveCamera(
-        60,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        200
-    );
-    camera.position.set(0, 0, 22);
+  --cy-primary: #ff003c;     /* neon red */
+  --cy-secondary: #b40024;   /* deep crimson */
+  --cy-accent: #ff003c;
+  --cy-danger: #ff003c;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    mount.appendChild(renderer.domElement);
+  --cy-text-main: #e9e9f2;
+  --cy-text-muted: #a6a6b5;
+}
 
-    // Particles
-    const count = 1200;
-    const positions = new Float32Array(count * 3);
+/* Background web pattern */
+body{
+  background:
+    radial-gradient(1200px 800px at 15% 20%, rgba(255,0,60,0.12), transparent 55%),
+    radial-gradient(900px 650px at 85% 30%, rgba(180,0,36,0.12), transparent 60%),
+    linear-gradient(transparent 24px, rgba(255,0,60,0.04) 25px, transparent 26px),
+    linear-gradient(90deg, transparent 24px, rgba(255,0,60,0.04) 25px, transparent 26px),
+    var(--cy-bg);
+  background-size: auto, auto, 40px 40px, 40px 40px, auto;
+}
 
-    for (let i = 0; i < count; i++) {
-        const i3 = i * 3;
-        positions[i3 + 0] = (Math.random() - 0.5) * 60; // x
-        positions[i3 + 1] = (Math.random() - 0.5) * 40; // y
-        positions[i3 + 2] = (Math.random() - 0.5) * 60; // z
-    }
+/* 3D background layer */
+#three-bg{
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+#three-bg canvas{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+/* Keep UI above */
+.cyber-nav, .cyber-main, main{
+  position: relative;
+  z-index: 1;
+}
 
-    const mat = new THREE.PointsMaterial({
-        color: 0xff003c,     // RED
-        size: 0.14,
-        transparent: true,
-        opacity: 0.9,
-        depthWrite: false
-    });
+/* Buttons: red glow + pulse */
+.cyber-btn{
+  border-color: rgba(255,0,60,0.55) !important;
+  box-shadow: 0 0 16px rgba(255,0,60,0.22), inset 0 0 18px rgba(255,0,60,0.14) !important;
+}
+.cyber-btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 0 26px rgba(255,0,60,0.35), inset 0 0 22px rgba(255,0,60,0.18) !important;
+}
 
-    const points = new THREE.Points(geo, mat);
-    scene.add(points);
-
-    // Animate
-    let t = 0;
-    function tick() {
-        t += 0.008;
-
-        points.rotation.y = t * 0.12;
-        points.rotation.x = t * 0.05;
-
-        renderer.render(scene, camera);
-        requestAnimationFrame(tick);
-    }
-    tick();
-
-    // Resize
-    window.addEventListener("resize", () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-})();
+/* Link highlight */
+.cyber-nav-link.active, .cyber-nav-link:hover{
+  color: var(--cy-primary) !important;
+  text-shadow: 0 0 10px rgba(255,0,60,0.45);
+}
